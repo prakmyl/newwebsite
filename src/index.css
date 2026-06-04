@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Antonio:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Oswald:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-brand-teal: #083D41;
+  --color-brand-teal-dark: #041F21;
+  --color-brand-teal-light: #135F64;
+  --color-brand-teal-deep: #031B1D;
+  
+  --color-brand-gold: #C6A667;
+  --color-brand-gold-hover: #D8B778;
+  --color-brand-gold-dark: #A17D3A;
+  --color-brand-gold-light: #E3D1A9;
+  
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Knockout Featherweight", "Antonio", "Oswald", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+body {
+  font-family: var(--font-display);
+  background-color: var(--color-brand-teal-deep) !important;
+  color: var(--color-brand-gold);
+  overflow-x: hidden;
+}
+
+section, header {
+  background-color: transparent !important;
+}
+
+/* Force #C6A667 (Officer Gold) universally on all content text elements throughout the build */
+h1, h2, h3, h4, h5, h6, p, li, label, input, textarea, select {
+  color: #C6A667 !important;
+}
+
+/* Preserve high shadow contrast text exclusively for filled gold action buttons */
+.text-brand-teal-deep,
+button[class*="text-brand-teal-deep"],
+a[class*="text-brand-teal-deep"],
+span[class*="text-brand-teal-deep"] {
+  color: #050507 !important;
+}
+
+/* Soft transition effects on interactive items */
+* {
+  transition: color 0.15s ease-out, border-color 0.15s ease-out;
+}
+
+/* Custom scrollbar to match theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-brand-teal-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-teal);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-gold);
+}
+
+/* Glossy Teal Card styles */
+.glossy-teal-card {
+  background: linear-gradient(135deg, rgba(8, 61, 65, 0.4) 0%, rgba(4, 31, 33, 0.75) 100%) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(19, 95, 100, 0.45) !important;
+  box-shadow: 0 8px 32px 0 rgba(4, 31, 33, 0.5), inset 0 1px 1px 0 rgba(25, 118, 125, 0.4) !important;
+}
+
+.glossy-teal-card-interactive {
+  background: linear-gradient(135deg, rgba(8, 61, 65, 0.3) 0%, rgba(4, 31, 33, 0.65) 100%) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(19, 95, 100, 0.3) !important;
+  box-shadow: 0 4px 20px 0 rgba(4, 31, 33, 0.3), inset 0 1px 1px 0 rgba(25, 118, 125, 0.25) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.glossy-teal-card-interactive:hover {
+  background: linear-gradient(135deg, rgba(19, 95, 100, 0.5) 0%, rgba(8, 61, 65, 0.8) 100%) !important;
+  border-color: rgba(198, 166, 103, 0.6) !important;
+  box-shadow: 0 12px 40px 0 rgba(19, 95, 100, 0.5), inset 0 1px 2px 0 rgba(255, 255, 255, 0.15) !important;
+  transform: translateY(-2px) !important;
+}

@@ -1,0 +1,73 @@
+{
+  "entities": {
+    "otp_code": {
+      "title": "OTP Verification Code",
+      "description": "A temporary 6-digit OTP code stored for business email verification before submission.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Verified business email address."
+        },
+        "otp": {
+          "type": "string",
+          "description": "6-digit numeric OTP code generated on the server or dynamically."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp."
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Expiry timestamp, usually 5 minutes after creation."
+        }
+      },
+      "required": ["email", "otp", "createdAt", "expiresAt"]
+    },
+    "inquiry": {
+      "title": "Contact Inquiry",
+      "description": "A verified contact submission with visitor details and requested services.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Visitor's full name."
+        },
+        "phone": {
+          "type": "string",
+          "description": "Visitor's verified phone number."
+        },
+        "email": {
+          "type": "string",
+          "description": "Verified business email address."
+        },
+        "service": {
+          "type": "string",
+          "description": "Selected KPO/BPO/IT service."
+        },
+        "message": {
+          "type": "string",
+          "description": "Personalized inquiry message."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Form submission timestamp."
+        }
+      },
+      "required": ["name", "phone", "email", "service", "message", "createdAt"]
+    }
+  },
+  "firestore": {
+    "otp_codes": {
+      "schema": "otp_code",
+      "description": "A collection containing temporary OTP verification records."
+    },
+    "inquiries": {
+      "schema": "inquiry",
+      "description": "A collection storing form submissions verified via OTP."
+    }
+  }
+}

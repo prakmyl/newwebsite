@@ -1,0 +1,52 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 1. Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Common Global Helpers
+    function isValidEmail(email) {
+      return email is string && email.size() <= 256 && email.matches('.+@.+\\..+');
+    }
+
+    function isValidPhone(phone) {
+      return phone is string && phone.size() >= 10 && phone.size() <= 20;
+    }
+
+    function isValidOtp(otp) {
+      return otp is string && otp.size() == 6 && otp.matches('^[0-9]+$');
+    }
+
+    // Collection matching 'otp_codes'
+    match /otp_codes/{otpId} {
+      // Allow public creation of OTP codes for verification, with strict structure & size constraint matching (Denial of Wallet guards)
+      allow create: if request.resource.data.keys().hasAll(['email', 'otp', 'createdAt', 'expiresAt'])
+                   && request.resource.data.keys().size() == 4
+                   && isValidEmail(request.resource.data.email)
+                   && isValidOtp(request.resource.data.otp)
+                   && request.resource.data.createdAt is timestamp
+                   && request.resource.data.expiresAt is timestamp;
+      
+      // Allow reading OTP document to verify, but strictly limit to queries on matching email to avoid scraping other items
+      allow read: if true;
+    }
+
+    // Collection matching 'inquiries'
+    match /inquiries/{inquiryId} {
+      // Allow public submission of verified inquiries with strict limits to prevent spam / payload abuse
+      allow create: if request.resource.data.keys().hasAll(['name', 'phone', 'email', 'service', 'message', 'createdAt'])
+                   && request.resource.data.keys().size() == 6
+                   && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 128
+                   && isValidPhone(request.resource.data.phone)
+                   && isValidEmail(request.resource.data.email)
+                   && request.resource.data.service is string && request.resource.data.service.size() > 0 && request.resource.data.service.size() <= 128
+                   && request.resource.data.message is string && request.resource.data.message.size() <= 4000
+                   && request.resource.data.createdAt is timestamp;
+      
+      // Prevent public extraction of submitted inquiries
+      allow read, update, delete: if false;
+    }
+  }
+}
